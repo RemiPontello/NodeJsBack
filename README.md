@@ -1,6 +1,6 @@
 # API Node.js
 
-## IMise en place
+## Mise en place
 
 installer les dépendances : npm install 
 
