@@ -1,43 +1,39 @@
-CREATE TABLE `livres` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `titre` varchar(255) NOT NULL,
-  `annee_publication` int NOT NULL,
-  `quantite` int NOT NULL DEFAULT 1
+CREATE TABLE IF NOT EXISTS livres (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  titre TEXT NOT NULL,
+  annee_publication INTEGER NOT NULL,
+  quantite INTEGER NOT NULL DEFAULT 1
 );
 
-CREATE TABLE `auteurs` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `nom` varchar(255) NOT NULL,
-  `prenom` varchar(255) NOT NULL,
-  `annee_naissance` int NOT NULL,
-  `annee_mort` int
+CREATE TABLE IF NOT EXISTS auteurs (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  nom TEXT NOT NULL,
+  prenom TEXT NOT NULL,
+  annee_naissance INTEGER NOT NULL,
+  annee_mort INTEGER
 );
 
-CREATE TABLE `auteur_livre` (
-  `id_auteur` int,
-  `id_livre` int,
-  PRIMARY KEY (`id_auteur`, `id_livre`)
+CREATE TABLE IF NOT EXISTS auteur_livre (
+  id_auteur INTEGER,
+  id_livre INTEGER,
+  PRIMARY KEY (id_auteur, id_livre),
+  FOREIGN KEY (id_auteur) REFERENCES auteurs(id),
+  FOREIGN KEY (id_livre) REFERENCES livres(id)
 );
 
-CREATE TABLE `personnes` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `nom` varchar(255) NOT NULL,
-  `prenom` varchar(255) NOT NULL,
-  `email` varchar(255) UNIQUE NOT NULL
+CREATE TABLE IF NOT EXISTS personnes (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  nom TEXT NOT NULL,
+  prenom TEXT NOT NULL,
+  email TEXT UNIQUE NOT NULL
 );
 
-CREATE TABLE `emprunt` (
-  `id` int PRIMARY KEY AUTO_INCREMENT,
-  `id_livre` int NOT NULL,
-  `id_personne` int NOT NULL,
-  `date_emprunt` date NOT NULL,
-  `date_retour` date
+CREATE TABLE IF NOT EXISTS emprunt (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  id_livre INTEGER NOT NULL,
+  id_personne INTEGER NOT NULL,
+  date_emprunt DATE NOT NULL,
+  date_retour DATE,
+  FOREIGN KEY (id_livre) REFERENCES livres(id),
+  FOREIGN KEY (id_personne) REFERENCES personnes(id)
 );
-
-ALTER TABLE `auteur_livre` ADD FOREIGN KEY (`id_livre`) REFERENCES `livres` (`id`);
-
-ALTER TABLE `auteur_livre` ADD FOREIGN KEY (`id_auteur`) REFERENCES `auteurs` (`id`);
-
-ALTER TABLE `emprunt` ADD FOREIGN KEY (`id_personne`) REFERENCES `personnes` (`id`);
-
-ALTER TABLE `emprunt` ADD FOREIGN KEY (`id_livre`) REFERENCES `livres` (`id`);

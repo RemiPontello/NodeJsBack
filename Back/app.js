@@ -1,41 +1,36 @@
-var createError = require('http-errors');
-var express = require('express');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var logger = require('morgan');
 
-var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
+const express = require('express');
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
+const crypto = require('crypto');
 
-var app = express();
+const app = express();
+const PORT = 8000;
 
-// view engine setup
-app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'jade');
+const API_KEY = '8f94826adab8ffebbeadb4f9e161b2dc';
 
-app.use(logger('dev'));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+const auteursRouter = require('./routes/auteurs');
+const livresRouter = require('./routes/livres');
+const empruntsRouter = require('./routes/emprunts');
+const rechercheRouter = require('./routes/recherche');
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use(morgan('dev'));
+app.use(bodyParser.json());
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  next(createError(404));
+app.use((req, res, next) => {
+    const apiKey = req.headers['x-api-key'];
+    if (apiKey && apiKey === API_KEY) {
+        next();
+    } else {
+        res.status(403).json({ message: 'Forbidden' });
+    }
 });
 
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
+app.use('/api/auteurs', auteursRouter);
+app.use('/api/livres', livresRouter);
+app.use('/api/emprunts', empruntsRouter);
+app.use('/api/recherche', rechercheRouter);
 
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
+app.listen(PORT, () => {
+    console.log(`Listening on port ${PORT}`);
 });
-
-module.exports = app;
