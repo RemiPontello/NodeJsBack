@@ -4,6 +4,6 @@
 
 installer les dépendances : npm install 
 
-lancer l'API: npm start
+lancer l'API: node app.js
 
 Le serveur démarre sur http://localhost:8000
