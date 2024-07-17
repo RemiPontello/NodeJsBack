@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../database');
 
-// GET /recherche/{mots}
+//GET
 router.get('/:mots', (req, res) => {
     const mots = req.params.mots.split(' ');
     const placeholders = mots.map(() => '%').join(' ');
