@@ -3,13 +3,13 @@ const router = express.Router();
 const db = require('../database');
 const crypto = require('crypto');
 
-// Middleware pour générer l'ETag
+//ETAG
 router.use((req, res, next) => {
     res.setHeader('ETag', crypto.createHash('md5').update(JSON.stringify(req.body)).digest('hex'));
     next();
 });
 
-// GET /livre
+//GET
 router.get('/', (req, res) => {
     const query = `
         SELECT l.id, l.titre, l.annee_publication, l.quantite, 
@@ -45,7 +45,7 @@ router.get('/', (req, res) => {
     });
 });
 
-// GET /livre/{id}
+//GET
 router.get('/:id', (req, res) => {
     const query = `
         SELECT l.id, l.titre, l.annee_publication, l.quantite, 
@@ -77,7 +77,7 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// POST /livre
+//POST
 router.post('/', (req, res) => {
     const { titre, annee_publication, quantite, auteurs } = req.body;
     if (!titre || !annee_publication || !auteurs || !Array.isArray(auteurs)) {
@@ -117,7 +117,7 @@ router.post('/', (req, res) => {
     });
 });
 
-// PUT /livre/{id}
+//PUT
 router.put('/:id', (req, res) => {
     const { titre, annee_publication, auteurs } = req.body;
     if (!titre || !annee_publication || !auteurs || !Array.isArray(auteurs)) {
@@ -156,14 +156,14 @@ router.put('/:id', (req, res) => {
                     if (err) {
                         return res.status(500).json({ error: err.message });
                     }
-                    res.status(200).json({ message: 'Livre modifié avec succès' });
+                    res.status(200).json({ message: 'Livre modifié' });
                 });
             });
         });
     });
 });
 
-// GET /livre/{id}/quantite
+//GET
 router.get('/:id/quantite', (req, res) => {
     const query = `
         SELECT l.quantite, 
@@ -183,7 +183,7 @@ router.get('/:id/quantite', (req, res) => {
     });
 });
 
-// PUT /livre/{id}/quantite
+//PUT
 router.put('/:id/quantite', (req, res) => {
     const { quantite } = req.body;
     if (!quantite || quantite < 0) {
@@ -213,12 +213,12 @@ router.put('/:id/quantite', (req, res) => {
             if (err) {
                 return res.status(500).json({ error: err.message });
             }
-            res.status(200).json({ message: 'Quantité modifiée avec succès' });
+            res.status(200).json({ message: 'Quantité modifiée' });
         });
     });
 });
 
-// DELETE /livre/{id}
+//DELETE
 router.delete('/:id', (req, res) => {
     const checkQuery = `
         SELECT COUNT(e.id) AS emprunts_en_cours 
@@ -242,7 +242,7 @@ router.delete('/:id', (req, res) => {
             if (err) {
                 return res.status(500).json({ error: err.message });
             }
-            res.status(200).json({ message: 'Livre supprimé avec succès' });
+            res.status(200).json({ message: 'Livre supprimé' });
         });
     });
 });

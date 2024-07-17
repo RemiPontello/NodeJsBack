@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../database');
 
-// GET /auteur
+//GET
 router.get('/', (req, res) => {
     const query = `SELECT * FROM auteurs`;
 
@@ -14,7 +14,7 @@ router.get('/', (req, res) => {
     });
 });
 
-// GET /auteur/{id}
+//GET
 router.get('/:id', (req, res) => {
     const query = `SELECT * FROM auteurs WHERE id = ?`;
 
@@ -29,7 +29,7 @@ router.get('/:id', (req, res) => {
     });
 });
 
-// POST /auteur
+//POST
 router.post('/', (req, res) => {
     const { nom, prenom, annee_naissance, annee_mort } = req.body;
     if (!nom || !prenom || !annee_naissance) {
@@ -46,7 +46,7 @@ router.post('/', (req, res) => {
     });
 });
 
-// PUT /auteur/{id}
+//PUT
 router.put('/:id', (req, res) => {
     const { nom, prenom, annee_naissance, annee_mort } = req.body;
     if (!nom || !prenom || !annee_naissance) {
@@ -59,11 +59,11 @@ router.put('/:id', (req, res) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
-        res.status(200).json({ message: 'Auteur modifié avec succès' });
+        res.status(200).json({ message: 'Auteur modifié' });
     });
 });
 
-// DELETE /auteur/{id}
+//DELETE
 router.delete('/:id', (req, res) => {
     const checkQuery = `SELECT COUNT(*) AS count FROM auteur_livre WHERE id_auteur = ?`;
 
@@ -81,7 +81,7 @@ router.delete('/:id', (req, res) => {
             if (err) {
                 return res.status(500).json({ error: err.message });
             }
-            res.status(200).json({ message: 'Auteur supprimé avec succès' });
+            res.status(200).json({ message: 'Auteur supprimé' });
         });
     });
 });

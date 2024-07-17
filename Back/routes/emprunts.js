@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const db = require('../database');
 
-// POST /emprunt
+//POST
 router.post('/', (req, res) => {
     const { id_livre, nom, prenom, email } = req.body;
     if (!id_livre || !nom || !prenom || !email) {
@@ -41,7 +41,7 @@ router.post('/', (req, res) => {
     });
 });
 
-// PUT /emprunt/{id}
+//PUT
 router.put('/:id', (req, res) => {
     const query = `UPDATE emprunt SET date_retour = DATE('now') WHERE id = ?`;
 
@@ -49,7 +49,7 @@ router.put('/:id', (req, res) => {
         if (err) {
             return res.status(500).json({ error: err.message });
         }
-        res.status(200).json({ message: 'Emprunt modifié avec succès' });
+        res.status(200).json({ message: 'Emprunt modifié' });
     });
 });
 
